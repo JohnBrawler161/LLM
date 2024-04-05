@@ -10,3 +10,4 @@ hypercorn
 unstructured==0.13.2
 unstructured-client==0.18.0
 python-dotenv==1.0.1
+Flask==3.0.2
