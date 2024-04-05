@@ -60,9 +60,12 @@ def process_url(query_phrase, keywords, keyword_weights, url, timeout):
             warnings.simplefilter("ignore")
             options = Options()
             options.page_load_strategy = "eager"
-            options.add_argument("--headless")
+            options.add_argument("--headless=new")
+            options.add_argument("--disable-gpu")
+            options.add_argument("--no-sandbox")
             result = ""
-            with webdriver.Chrome(options=options) as dr:
+            dr = webdriver.Chrome(options=options)
+            try:
                 print(f"*****setting page load timeout {timeout}")
                 dr.set_page_load_timeout(timeout)
                 try:
@@ -78,6 +81,8 @@ def process_url(query_phrase, keywords, keyword_weights, url, timeout):
                     )
                 except selenium.common.exceptions.TimeoutException:
                     return "", url
+            finally:
+                dr.quit()
     except Exception:
         traceback.print_exc()
         print(f"{site} err")
